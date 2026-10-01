@@ -1,5 +1,4 @@
 # MD2PDF - Minimalist Markdown to PDF Converter
-
 MD2PDF is a modern, lightweight, client-side web application built with **HTML5**, **Bootstrap 5**, and **Vanilla JavaScript (ES6+)**. It allows users to write or upload Markdown files (`.md`, `.markdown`, `.txt`) and export them as formatted PDF documents directly in the browser.
 ---
 
