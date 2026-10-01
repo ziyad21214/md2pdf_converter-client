@@ -1,0 +1,207 @@
+
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD2PDF - Minimalist Markdown to PDF Converter</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+
+  <link rel="stylesheet" href="static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body class="bg-body-tertiary">
+
+  <nav class="navbar navbar-expand-lg border-bottom bg-body sticky-top">
+    <div class="container-fluid max-width-lg px-3 px-md-4">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="#">
+        <i class="bi bi-filetype-md fs-3"></i>
+        <span>MD2PDF</span>
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" id="themeToggleBtn" type="button" aria-label="Toggle theme">
+          <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+          <span class="d-none d-sm-inline ms-1" id="themeText">Dark Mode</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-wrapper container-fluid max-width-lg py-4 px-3 px-md-4">
+    
+    <section class="mb-4">
+      <div id="dropZone" class="drop-zone p-4 text-center">
+        <i class="bi bi-cloud-arrow-up text-primary display-5 d-block mb-2"></i>
+        <h5 class="fw-semibold mb-1">Drag & Drop your Markdown file here</h5>
+        <p class="text-muted small mb-3">Supports .md, .markdown, or .txt files</p>
+        <label class="btn btn-primary btn-sm px-4 rounded-pill">
+          Browse Files
+          <input type="file" id="fileInput" accept=".md,.markdown,.txt" class="d-none">
+        </label>
+      </div>
+    </section>
+
+    <section class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-3">
+        <div class="row g-3 align-items-center">
+          
+          <div class="col-12 col-md-4">
+            <ul class="nav nav-pills nav-fill" id="viewModeTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active py-1" id="editor-tab" data-bs-toggle="tab" data-bs-target="#editor-pane" type="button" role="tab">
+                  <i class="bi bi-pencil-square me-1"></i>Editor
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link py-1" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-pane" type="button" role="tab">
+                  <i class="bi bi-eye me-1"></i>Preview
+                </button>
+              </li>
+              <li class="nav-item d-none d-lg-block" role="presentation">
+                <button class="nav-link py-1" id="split-tab" data-bs-toggle="tab" data-bs-target="#split-pane" type="button" role="tab">
+                  <i class="bi bi-columns-gap me-1"></i>Split
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-12 col-md-8 d-flex flex-wrap gap-2 justify-content-md-end">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-gear"></i> PDF Options
+              </button>
+              <div class="dropdown-menu dropdown-menu-end p-3 shadow" style="min-width: 260px;">
+                <h6 class="dropdown-header px-0 text-body">Export Settings</h6>
+                <div class="mb-2">
+                  <label for="pdfPageSize" class="form-label small mb-1">Page Size</label>
+                  <select class="form-select form-select-sm" id="pdfPageSize">
+                    <option value="a4" selected>A4</option>
+                    <option value="letter">Letter</option>
+                    <option value="legal">Legal</option>
+                  </select>
+                </div>
+                <div class="mb-2">
+                  <label for="pdfOrientation" class="form-label small mb-1">Orientation</label>
+                  <select class="form-select form-select-sm" id="pdfOrientation">
+                    <option value="portrait" selected>Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
+                <div class="mb-2">
+                  <label for="pdfMargin" class="form-label small mb-1">Margin (mm)</label>
+                  <input type="number" class="form-control form-control-sm" id="pdfMargin" value="10" min="0" max="30">
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" id="clearBtn" type="button">
+              <i class="bi bi-trash"></i> Clear
+            </button>
+
+            <button class="btn btn-success btn-sm d-flex align-items-center gap-1 px-3 ms-auto ms-md-0" id="convertBtn" type="button">
+              <i class="bi bi-file-earmark-pdf"></i>
+              <span id="convertBtnText">Download PDF</span>
+              <span id="convertSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-content" id="workspaceTabContent">
+      
+      <div class="tab-pane fade show active" id="editor-pane" role="tabpanel">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-body d-flex justify-content-between align-items-center py-2">
+            <span class="small fw-semibold text-muted">MARKDOWN INPUT</span>
+            <span class="badge bg-secondary-subtle text-secondary fw-normal" id="wordCount">0 words</span>
+          </div>
+          <div class="card-body p-0">
+            <textarea id="markdownEditor" class="form-control border-0 editor-textarea p-3" placeholder="Type or paste Markdown here..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="preview-pane" role="tabpanel">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-body py-2">
+            <span class="small fw-semibold text-muted">HTML PREVIEW</span>
+          </div>
+          <div class="card-body bg-white text-dark p-3 p-md-4 rounded-bottom" id="previewContainer">
+            <div id="renderedPreview" class="markdown-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="split-pane" role="tabpanel">
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-body d-flex justify-content-between align-items-center py-2">
+                <span class="small fw-semibold text-muted">MARKDOWN INPUT</span>
+                <span class="badge bg-secondary-subtle text-secondary fw-normal" id="splitWordCount">0 words</span>
+              </div>
+              <div class="card-body p-0">
+                <textarea id="splitMarkdownEditor" class="form-control border-0 editor-textarea p-3" placeholder="Type or paste Markdown here..."></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-body py-2">
+                <span class="small fw-semibold text-muted">LIVE PREVIEW</span>
+              </div>
+              <div class="card-body bg-white text-dark p-3 p-md-4 rounded-bottom overflow-auto" style="max-height: 500px;">
+                <div id="splitRenderedPreview" class="markdown-body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-semibold mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-clock-history text-primary"></i> Conversion History
+        </h5>
+        <button class="btn btn-link text-danger btn-sm p-0 text-decoration-none" id="clearHistoryBtn" type="button">
+          Clear All History
+        </button>
+      </div>
+
+      <div id="historyList" class="row g-3"></div>
+      <div id="emptyHistoryMsg" class="text-center text-muted py-4 card border-0 shadow-sm">
+        <i class="bi bi-inbox fs-3 mb-2 text-secondary"></i>
+        <p class="mb-0 small">No recent conversions found in local storage.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-3 mt-auto bg-body text-center text-muted small">
+    <div class="container">
+      Client-side conversion app • Perfect for static GitHub Pages hosting
+    </div>
+  </footer>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="appToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">Action completed!</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+<script type="module" src="static/js/app.js"></script>
+</body>
+</html>

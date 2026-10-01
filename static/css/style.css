@@ -1,0 +1,122 @@
+:root {
+      --dropzone-bg: #f8f9fa;
+      --dropzone-border: #dee2e6;
+      --editor-bg: #ffffff;
+    }
+
+    [data-bs-theme="dark"] {
+      --dropzone-bg: #212529;
+      --dropzone-border: #495057;
+      --editor-bg: #1e1e1e;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-wrapper {
+      flex: 1;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--dropzone-border);
+      background-color: var(--dropzone-bg);
+      border-radius: 0.75rem;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: #0d6efd;
+      background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    .editor-textarea {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 380px;
+      background-color: var(--editor-bg);
+    }
+
+    /* Standard Markdown styling inside preview and generated PDF */
+    .markdown-body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      word-wrap: break-word;
+      color: #24292e;
+      background-color: #ffffff;
+      padding: 2.5rem;
+      border-radius: 0.5rem;
+      min-height: 380px;
+    }
+
+    .markdown-body h1, .markdown-body h2 {
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3em;
+      margin-top: 1.5em;
+      margin-bottom: 0.8em;
+    }
+
+    .markdown-body h1 { font-size: 2em; }
+    .markdown-body h2 { font-size: 1.5em; }
+    .markdown-body h3 { font-size: 1.25em; }
+
+    .markdown-body blockquote {
+      padding: 0 1em;
+      color: #6a737d;
+      border-left: 0.25em solid #dfe2e5;
+      margin: 1em 0;
+    }
+
+    .markdown-body code {
+      padding: 0.2em 0.4em;
+      margin: 0;
+      font-size: 85%;
+      background-color: rgba(27,31,35,0.05);
+      border-radius: 3px;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    .markdown-body pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      background-color: #f6f8fa;
+      border-radius: 6px;
+    }
+
+    .markdown-body pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+
+    .markdown-body table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      margin-top: 0;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+
+    .markdown-body table th, .markdown-body table td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+
+    .history-card {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .history-card:hover {
+      transform: translateY(-2px);
+    }
